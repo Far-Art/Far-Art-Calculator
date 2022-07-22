@@ -1,1 +1,3 @@
-<p>{{"symbol = " + symbol}}</p>
+<div>
+  <button (click)="fireSymbol(symbols.length > 0 ? symbols[0] : null)">{{symbols.length > 0 ? symbols[0] : []}}</button>
+</div>

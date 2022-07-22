@@ -8,15 +8,43 @@ import {CalculationService} from "../../services/calculation.service";
 })
 export class ChassisComponent implements OnInit {
 
-  constructor(private calc: CalculationService) {
+  formula: string;
+  deleteSymbol = 'Backspace';
+  clearSymbol = "CLEAR";
+  equalsSymbol = '=';
+  enterSymbol = 'Enter';
+
+  constructor(public calcService: CalculationService) {
+    this.formula = calcService.formula;
   }
+
 
   ngOnInit(): void {
-    this.calc.calculate();
-  }
-
-  keyPress(){
 
   }
 
+  keyPress(key: string) {
+    switch (key) {
+      case this.deleteSymbol: {
+        this.calcService.removeLastSymbol();
+        break;
+      }
+      case this.clearSymbol: {
+        this.calcService.clearFormula();
+        break;
+      }
+      case this.equalsSymbol: {
+        this.calcService.calculate();
+        break;
+      }
+      case this.enterSymbol: {
+        this.calcService.calculate();
+        break;
+      }
+      default: {
+        this.calcService.appendSymbol(key);
+        break;
+      }
+    }
+  }
 }
