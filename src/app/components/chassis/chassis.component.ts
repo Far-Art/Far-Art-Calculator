@@ -30,7 +30,7 @@ export class ChassisComponent implements OnInit {
         break;
       }
       case this.clearSymbol: {
-        this.calcService.clearFormula();
+        this.calcService.resetFormula();
         break;
       }
       case this.equalsSymbol: {

@@ -7,19 +7,15 @@ export class CalculationService {
 
   private resultCache = new Map<string, string>();
 
-  private firstOrderOperations: { operation: string, index: number[] }[] = [];
+  private operationsOrder: string[] = [];
 
-  private secondOrderOperations: { operation: string, index: number[] }[] = [];
+  private static numericSymbols = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
-  private numericSymbols = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+  private static firstOrderSymbols = ['*', '/'];
 
-  private firstOrderSymbols = ['*', '/'];
+  private static secondOrderSymbols = ['+', '-'];
 
-  private secondOrderSymbols = ['+', '-'];
-
-  private dot = '.';
-
-  private numIndex = 0;
+  private static dot = '.';
 
   private canAppendDot = true;
 
@@ -30,60 +26,55 @@ export class CalculationService {
   constructor() {
   }
 
+  /**
+   * appends a symbol to a formula by complex logic
+   * @param symbol
+   */
   appendSymbol(symbol: string) {
-    const isFirstOrderOperation = this.firstOrderSymbols.includes(symbol);
-    const isSecondOrderOperation = this.secondOrderSymbols.includes(symbol);
-    const isDot = this.dot === symbol;
+    const isFirstOrderOperation = CalculationService.firstOrderSymbols.includes(symbol);
+    const isSecondOrderOperation = CalculationService.secondOrderSymbols.includes(symbol);
+    const isDot = CalculationService.dot === symbol;
 
-    // operation symbol cannot be first in string
-    if (this.formula.length === 0 && (isFirstOrderOperation || isSecondOrderOperation)) {
-      return;
-    }
-
-    // if dot is first in string append zero
-    if (this.formula.length === 0 && isDot) {
-      this.formula += '0.';
-      this.canAppendDot = false;
+    // operation symbol cannot be first in string unless it is minus
+    if (this.formula.length === 0 && symbol !== '-' && (isFirstOrderOperation || isSecondOrderOperation)) {
       return;
     }
 
     const lastSymbol = this.formula.charAt(this.formula.length - 1);
 
     // operation symbol or dot cannot be pressed after dot
-    if (lastSymbol === this.dot && (isFirstOrderOperation || isSecondOrderOperation || isDot)) {
+    if (lastSymbol === CalculationService.dot && (isFirstOrderOperation || isSecondOrderOperation || isDot)) {
       return;
     }
 
-    // if last symbol is operation symbol replace it with new operation symbol
-    if ((this.firstOrderSymbols.includes(lastSymbol) || this.secondOrderSymbols.includes(lastSymbol)) && (isFirstOrderOperation || isSecondOrderOperation)) {
+    // if dot is pressed before number append zero
+    if (!CalculationService.numericSymbols.includes(lastSymbol) && isDot) {
+      this.formula += '0.';
+      this.canAppendDot = false;
+      return;
+    }
+
+    // if last symbol in formula is operation symbol, replace with new operation symbol
+    if ((CalculationService.firstOrderSymbols.includes(lastSymbol) || CalculationService.secondOrderSymbols.includes(lastSymbol)) && (isFirstOrderOperation || isSecondOrderOperation)) {
       this.removeLastSymbol();
       this.formula += symbol;
       return;
     }
 
-    // first order symbol occurred
-    if (isFirstOrderOperation) {
-      this.firstOrderOperations.push({operation: symbol, index: [this.numIndex, ++this.numIndex]});
-      this.formula += symbol;
-      this.canAppendDot = true;
-      return;
-    }
-
-    // second order symbol occurred
-    if (isSecondOrderOperation) {
-      this.secondOrderOperations.push({operation: symbol, index: [this.numIndex, ++this.numIndex]});
+    // order symbol occurred
+    if (isFirstOrderOperation || isSecondOrderOperation) {
       this.formula += symbol;
       this.canAppendDot = true;
       return;
     }
 
     // numeric order symbol occurred
-    if (this.numericSymbols.includes(symbol)) {
+    if (CalculationService.numericSymbols.includes(symbol)) {
       this.formula += symbol;
       return;
     }
 
-    // dot symbol occurred
+    // cannot append another dot in number
     if (isDot && this.canAppendDot) {
       this.formula += symbol;
       this.canAppendDot = false;
@@ -91,55 +82,96 @@ export class CalculationService {
     }
   }
 
+  /**
+   * remove last symbol in formula
+   */
   removeLastSymbol(): void {
     const toRemove = this.formula.charAt(this.formula.length - 1);
-    if (this.firstOrderSymbols.includes(toRemove)) {
-      this.firstOrderOperations.pop();
-    } else if (this.secondOrderSymbols.includes(toRemove)) {
-      this.secondOrderOperations.pop();
-    } else if (this.dot === toRemove) {
+    if (CalculationService.dot === toRemove) {
       this.canAppendDot = true;
     }
     this.formula = this.formula.slice(0, this.formula.length - 1);
   }
 
-  clearFormula(): void {
+  /**
+   * reset formula and all other values, cache are left untouched
+   */
+  resetFormula(): void {
     this.formula = '';
-    this.firstOrderOperations.length = 0;
-    this.secondOrderOperations.length = 0;
+    this.result = '';
+    this.operationsOrder.length = 0;
     this.canAppendDot = true;
   }
 
   calculate() {
-    if (this.resultCache.has(this.formula)) {
-      this.result = `${this.resultCache.get(this.formula)}`;
-      return;
+    try {
+      this.correctFormula();
+      if (this.resultCache.has(this.formula)) {
+        this.result = `${this.resultCache.get(this.formula)}`;
+      } else {
+        const numbers = this.parseFormula();
+        this.reduceCalcOperations(CalculationService.firstOrderSymbols, numbers);
+        this.reduceCalcOperations(CalculationService.secondOrderSymbols, numbers);
+        this.result = `${numbers[0]}`;
+        this.resultCache.set(this.formula, this.result);
+      }
+    } catch (error: any) {
+      this.result = `${error}`;
+    } finally {
+      this.operationsOrder.length = 0;
     }
-    const placeholder = '##';
-    let temp = this.formula;
-    this.firstOrderSymbols.forEach(o => {
-      temp = temp.split(o).join(placeholder);
-    });
-    this.secondOrderSymbols.forEach(o => {
-      temp = temp.split(o).join(placeholder);
-    });
-    const numbersList = temp.split(placeholder).map(n => Number(n));
-    this.firstOrderOperations.forEach(op => {
-      const result = this.calcOperation(numbersList[op.index[0]], numbersList[op.index[1]], op.operation);
-      numbersList[op.index[0]] = result;
-      numbersList[op.index[1]] = result;
-    });
-    this.secondOrderOperations.forEach(op => {
-      const result = this.calcOperation(numbersList[op.index[0]], numbersList[op.index[1]], op.operation);
-      numbersList[op.index[0]] = result;
-      numbersList[op.index[1]] = result;
-    });
-    this.result = `${numbersList[this.secondOrderOperations[this.secondOrderOperations.length - 1].index[0]]}`;
-    console.log(this.result);
-    this.resultCache.set(this.formula, this.result);
   }
 
-  calcOperation(num1: number, num2: number, operation: string): number {
+  /**
+   * removes symbols in formula to make it correct
+   * @private
+   */
+  private correctFormula() {
+    const lastChar = this.formula.charAt(this.formula.length - 1);
+    if (lastChar === CalculationService.dot) {
+      this.formula = this.formula.slice(0, this.formula.length - 1);
+    }
+    if (CalculationService.firstOrderSymbols.includes(lastChar) || CalculationService.secondOrderSymbols.includes(lastChar)) {
+      this.formula = this.formula.slice(0, this.formula.length - 1);
+    }
+  }
+
+  /**
+   * process formula and prepare arrays for calculations
+   * @private
+   */
+  private parseFormula(): number[] {
+    const numbers: number[] = [];
+    let num = '';
+    const chars = this.formula.split('');
+    for (let i = 0; i < chars.length; i++) {
+      const c = chars[i];
+      if (i === 0 && '-' === c || CalculationService.numericSymbols.includes(c) || c === CalculationService.dot) {
+        num += c;
+      } else {
+        numbers.push(Number(num));
+        num = '';
+        this.operationsOrder.push(c);
+      }
+    }
+    numbers.push(Number(num));
+    return numbers;
+  }
+
+  private reduceCalcOperations(operationSymbolsArr: string[], numbersArr: number[]): void {
+    for (let i = 0; i < this.operationsOrder.length;) {
+      const op = this.operationsOrder[i];
+      if (operationSymbolsArr.includes(op)) {
+        const result = CalculationService.calcOperation(numbersArr[i], numbersArr[i + 1], op);
+        numbersArr.splice(i, 2, result);
+        this.operationsOrder.splice(i, 1);
+      } else {
+        i++;
+      }
+    }
+  }
+
+  private static calcOperation(num1: number, num2: number, operation: string): number {
     switch (operation) {
       case '*': {
         return num1 * num2;

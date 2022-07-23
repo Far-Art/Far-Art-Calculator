@@ -1,6 +1,8 @@
 <p>chassis works!</p>
 <div class="chassis-container">
-  <div>{{calcService.formula}}</div>
+
+  <app-display [formula]="calcService.formula" [result]="calcService.result"></app-display>
+
   <div class="row">
     <app-button [symbols]="[deleteSymbol]" (eventEmitter)="keyPress($event)"></app-button>
     <app-button [symbols]="[clearSymbol]" (eventEmitter)="keyPress($event)"></app-button>
