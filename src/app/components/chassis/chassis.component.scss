@@ -1,3 +1,22 @@
-.row {
-  display: flex;
+.chassis-container {
+  font-size: 1rem;
+  background: darkgray;
+  gap: 2em;
+}
+
+.grid-container {
+  display: grid;
+  gap: 0.2em;
+  grid-template-columns: repeat(4, 1fr);
+  justify-content: space-around;
+}
+
+.grid-item {
+  background: rgba(190, 1, 1, 0.3);
+  border: 1px solid black;
+  text-align: center;
+}
+
+.grid-item-wide {
+  grid-column: span 2;
 }

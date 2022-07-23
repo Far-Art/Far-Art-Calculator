@@ -1,35 +1,39 @@
-<p>chassis works!</p>
 <div class="chassis-container">
 
   <app-display [formula]="calcService.formula" [result]="calcService.result"></app-display>
 
-  <div class="row">
-    <app-button [symbols]="[deleteSymbol]" (eventEmitter)="keyPress($event)"></app-button>
-    <app-button [symbols]="[clearSymbol]" (eventEmitter)="keyPress($event)"></app-button>
-    <app-button [symbols]="['*']" (eventEmitter)="keyPress($event)"></app-button>
-  </div>
-  <div class="row">
-    <app-button [symbols]="['7']" (eventEmitter)="keyPress($event)"></app-button>
-    <app-button [symbols]="['8']" (eventEmitter)="keyPress($event)"></app-button>
-    <app-button [symbols]="['9']" (eventEmitter)="keyPress($event)"></app-button>
-    <app-button [symbols]="['/']" (eventEmitter)="keyPress($event)"></app-button>
-  </div>
-  <div class="row">
-    <app-button [symbols]="['4']" (eventEmitter)="keyPress($event)"></app-button>
-    <app-button [symbols]="['5']" (eventEmitter)="keyPress($event)"></app-button>
-    <app-button [symbols]="['6']" (eventEmitter)="keyPress($event)"></app-button>
-    <app-button [symbols]="['+']" (eventEmitter)="keyPress($event)"></app-button>
-  </div>
-  <div class="row">
-    <app-button [symbols]="['1']" (eventEmitter)="keyPress($event)"></app-button>
-    <app-button [symbols]="['2']" (eventEmitter)="keyPress($event)"></app-button>
-    <app-button [symbols]="['3']" (eventEmitter)="keyPress($event)"></app-button>
-    <app-button [symbols]="['-']" (eventEmitter)="keyPress($event)"></app-button>
-  </div>
-  <div class="row">
-    <app-button [symbols]="['0']" (eventEmitter)="keyPress($event)"></app-button>
-    <app-button [symbols]="['.']" (eventEmitter)="keyPress($event)"></app-button>
-    <app-button [symbols]="[equalsSymbol,enterSymbol]" (eventEmitter)="keyPress($event)"></app-button>
+  <div class="grid-container">
+
+    <app-button class="grid-item delete" [muiIcon]="'backspace'" [symbols]="[deleteSymbol]"
+                (eventEmitter)="keyPress($event)"></app-button>
+    <app-button class="grid-item grid-item-wide clear" [muiIcon]="'CE'" [symbols]="[clearSymbol]"
+                (eventEmitter)="keyPress($event)"></app-button>
+    <app-button class="grid-item multiply operation" [muiIcon]="'clear'" [symbols]="['*']"
+                (eventEmitter)="keyPress($event)"></app-button>
+
+    <app-button class="grid-item numerical" [symbols]="['7']" (eventEmitter)="keyPress($event)"></app-button>
+    <app-button class="grid-item numerical" [symbols]="['8']" (eventEmitter)="keyPress($event)"></app-button>
+    <app-button class="grid-item numerical" [symbols]="['9']" (eventEmitter)="keyPress($event)"></app-button>
+    <app-button class="grid-item divide operation" [muiIcon]="'/'" [symbols]="['/']"
+                (eventEmitter)="keyPress($event)"></app-button>
+
+    <app-button class="grid-item numerical" [symbols]="['4']" (eventEmitter)="keyPress($event)"></app-button>
+    <app-button class="grid-item numerical" [symbols]="['5']" (eventEmitter)="keyPress($event)"></app-button>
+    <app-button class="grid-item numerical" [symbols]="['6']" (eventEmitter)="keyPress($event)"></app-button>
+    <app-button class="grid-item plus operation" [muiIcon]="'add'" [symbols]="['+']"
+                (eventEmitter)="keyPress($event)"></app-button>
+
+    <app-button class="grid-item numerical" [symbols]="['1']" (eventEmitter)="keyPress($event)"></app-button>
+    <app-button class="grid-item numerical" [symbols]="['2']" (eventEmitter)="keyPress($event)"></app-button>
+    <app-button class="grid-item numerical" [symbols]="['3']" (eventEmitter)="keyPress($event)"></app-button>
+    <app-button class="grid-item minus operation" [muiIcon]="'-'" [symbols]="['-']"
+                (eventEmitter)="keyPress($event)"></app-button>
+
+    <app-button class="grid-item grid-item-wide numerical" [symbols]="['0']"
+                (eventEmitter)="keyPress($event)"></app-button>
+    <app-button class="grid-item dot" [symbols]="['.']" (eventEmitter)="keyPress($event)"></app-button>
+    <app-button class="grid-item equals" [symbols]="[equalsSymbol,enterSymbol]"
+                (eventEmitter)="keyPress($event)"></app-button>
   </div>
 </div>
 

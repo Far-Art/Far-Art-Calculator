@@ -1,0 +1,11 @@
+button {
+  all: unset;
+  cursor: pointer;
+  width: inherit;
+  height: inherit;
+  font: inherit;
+}
+
+button:focus {
+  outline: orange 5px auto;
+}

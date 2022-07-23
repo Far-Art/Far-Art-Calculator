@@ -11,6 +11,8 @@ export class ButtonComponent implements OnInit, OnDestroy {
   @Input()
   symbols: string[] = [];
 
+  @Input() muiIcon:string = '';
+
   @Output() eventEmitter = new EventEmitter<string>();
 
   private onKeyDownEvent: keyof WindowEventMap = "keydown";

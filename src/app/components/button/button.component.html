@@ -1,3 +1,6 @@
-<div>
-  <button (click)="fireSymbol(symbols.length > 0 ? symbols[0] : null)">{{symbols.length > 0 ? symbols[0] : []}}</button>
-</div>
+<button
+  (click)="fireSymbol(symbols.length > 0 ? symbols[0] : null)">
+  <span *ngIf="!muiIcon">{{symbols.length > 0 ? symbols[0] : []}}</span>
+  <mat-icon *ngIf="muiIcon">{{muiIcon}}</mat-icon>
+</button>
+

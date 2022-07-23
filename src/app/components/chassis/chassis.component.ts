@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CalculationService} from "../../services/calculation.service";
 
+
 @Component({
   selector: 'app-chassis',
   templateUrl: './chassis.component.html',
