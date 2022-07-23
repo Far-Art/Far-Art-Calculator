@@ -1,12 +1,14 @@
 .chassis-container {
+  position: relative;
   font-size: 1rem;
   background: darkgray;
   gap: 2em;
+  max-width: 20em;
 }
 
 .grid-container {
   display: grid;
-  gap: 0.2em;
+  gap: 0.15em;
   grid-template-columns: repeat(4, 1fr);
   justify-content: space-around;
 }
@@ -15,8 +17,24 @@
   background: rgba(190, 1, 1, 0.3);
   border: 1px solid black;
   text-align: center;
+  height: 5em;
+}
+
+.grid-item:hover, .grid-item:focus-within {
+  background: rgba(190, 1, 1, 0.8);
+  border: 1px solid black;
+  text-align: center;
 }
 
 .grid-item-wide {
   grid-column: span 2;
+}
+
+.display {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 0.5em 1em;
+  font-size: 1em;
+  height: 4em;
 }

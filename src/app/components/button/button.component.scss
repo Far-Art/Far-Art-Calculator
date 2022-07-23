@@ -1,11 +1,16 @@
 button {
   all: unset;
   cursor: pointer;
-  width: inherit;
-  height: inherit;
+  width: 100%;
+  height: 100%;
   font: inherit;
 }
 
 button:focus {
   outline: orange 5px auto;
 }
+
+mat-icon{
+  vertical-align: middle;
+}
+

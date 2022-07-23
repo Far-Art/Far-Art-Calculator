@@ -11,7 +11,7 @@ export class ChassisComponent implements OnInit {
 
   formula: string;
   deleteSymbol = 'Backspace';
-  clearSymbol = "CLEAR";
+  clearSymbol = "CE";
   equalsSymbol = '=';
   enterSymbol = 'Enter';
 
