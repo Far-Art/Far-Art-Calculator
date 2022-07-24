@@ -24,6 +24,7 @@ export class ChassisComponent implements OnInit {
 
   }
 
+// TODO bug, when button in focus, pressing enter appends new symbol and performs calculation, change to only append symbol if button in focus
   keyPress(key: string) {
     switch (key) {
       case this.deleteSymbol: {
