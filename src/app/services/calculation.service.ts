@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {WindowObjRefService} from "./window-obj-ref.service";
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,7 @@ export class CalculationService {
 
   result: string = '';
 
-  constructor() {
+  constructor(private windowService?: WindowObjRefService) {
   }
 
   /**
@@ -31,6 +32,7 @@ export class CalculationService {
    * @param symbol
    */
   appendSymbol(symbol: string) {
+    // TODO there is a bug when placing minus as first symbol, it is possible to change it other operation symbol
     const isFirstOrderOperation = CalculationService.firstOrderSymbols.includes(symbol);
     const isSecondOrderOperation = CalculationService.secondOrderSymbols.includes(symbol);
     const isDot = CalculationService.dot === symbol;
@@ -104,6 +106,7 @@ export class CalculationService {
   }
 
   calculate() {
+    const start = this.windowService?.windowObject.performance.now();
     try {
       this.correctFormula();
       if (this.resultCache.has(this.formula)) {
@@ -119,6 +122,9 @@ export class CalculationService {
       this.result = `${error}`;
     } finally {
       this.operationsOrder.length = 0;
+      if (this.windowService && start) {
+        console.log(`calculated in ${this.windowService.windowObject.performance.now() - start} nanos`);
+      }
     }
   }
 
