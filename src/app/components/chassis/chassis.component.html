@@ -1,39 +1,38 @@
-<div class="chassis-container">
+  <div class="perspective-container">
+    <div class="chassis">
+      <app-display class="display" [formula]="calcService.formula" [result]="calcService.result"></app-display>
+      <div class="grid-container">
+        <app-button class="grid-item clear" [symbols]="[clearSymbol]"
+                    (eventEmitter)="keyPress($event)"></app-button>
+        <app-button class="grid-item delete" [muiIcon]="'backspace'" [symbols]="[deleteSymbol]"
+                    (eventEmitter)="keyPress($event)"></app-button>
+        <app-button class="grid-item multiply operation" [muiIcon]="'clear'" [symbols]="['*']"
+                    (eventEmitter)="keyPress($event)"></app-button>
 
-  <app-display class="display" [formula]="calcService.formula" [result]="calcService.result"></app-display>
+        <app-button class="grid-item numerical" [symbols]="['7']" (eventEmitter)="keyPress($event)"></app-button>
+        <app-button class="grid-item numerical" [symbols]="['8']" (eventEmitter)="keyPress($event)"></app-button>
+        <app-button class="grid-item numerical" [symbols]="['9']" (eventEmitter)="keyPress($event)"></app-button>
+        <app-button class="grid-item divide operation" [symbols]="['/']"
+                    (eventEmitter)="keyPress($event)"></app-button>
 
-  <div class="grid-container">
+        <app-button class="grid-item numerical" [symbols]="['4']" (eventEmitter)="keyPress($event)"></app-button>
+        <app-button class="grid-item numerical" [symbols]="['5']" (eventEmitter)="keyPress($event)"></app-button>
+        <app-button class="grid-item numerical" [symbols]="['6']" (eventEmitter)="keyPress($event)"></app-button>
+        <app-button class="grid-item minus operation" [symbols]="['-']"
+                    (eventEmitter)="keyPress($event)"></app-button>
 
-    <app-button class="grid-item grid-item-wide clear" [symbols]="[clearSymbol]"
-                (eventEmitter)="keyPress($event)"></app-button>
-    <app-button class="grid-item delete" [muiIcon]="'backspace'" [symbols]="[deleteSymbol]"
-                (eventEmitter)="keyPress($event)"></app-button>
-    <app-button class="grid-item multiply operation" [muiIcon]="'clear'" [symbols]="['*']"
-                (eventEmitter)="keyPress($event)"></app-button>
+        <app-button class="grid-item numerical" [symbols]="['1']" (eventEmitter)="keyPress($event)"></app-button>
+        <app-button class="grid-item numerical" [symbols]="['2']" (eventEmitter)="keyPress($event)"></app-button>
+        <app-button class="grid-item numerical" [symbols]="['3']" (eventEmitter)="keyPress($event)"></app-button>
+        <app-button class="grid-item grid-item-tall plus operation" [symbols]="['+']"
+                    (eventEmitter)="keyPress($event)"></app-button>
 
-    <app-button class="grid-item numerical" [symbols]="['7']" (eventEmitter)="keyPress($event)"></app-button>
-    <app-button class="grid-item numerical" [symbols]="['8']" (eventEmitter)="keyPress($event)"></app-button>
-    <app-button class="grid-item numerical" [symbols]="['9']" (eventEmitter)="keyPress($event)"></app-button>
-    <app-button class="grid-item divide operation" [symbols]="['/']"
-                (eventEmitter)="keyPress($event)"></app-button>
 
-    <app-button class="grid-item numerical" [symbols]="['4']" (eventEmitter)="keyPress($event)"></app-button>
-    <app-button class="grid-item numerical" [symbols]="['5']" (eventEmitter)="keyPress($event)"></app-button>
-    <app-button class="grid-item numerical" [symbols]="['6']" (eventEmitter)="keyPress($event)"></app-button>
-    <app-button class="grid-item plus operation" [symbols]="['+']"
-                (eventEmitter)="keyPress($event)"></app-button>
-
-    <app-button class="grid-item numerical" [symbols]="['1']" (eventEmitter)="keyPress($event)"></app-button>
-    <app-button class="grid-item numerical" [symbols]="['2']" (eventEmitter)="keyPress($event)"></app-button>
-    <app-button class="grid-item numerical" [symbols]="['3']" (eventEmitter)="keyPress($event)"></app-button>
-    <app-button class="grid-item minus operation" [symbols]="['-']"
-                (eventEmitter)="keyPress($event)"></app-button>
-
-    <app-button class="grid-item grid-item-wide numerical" [symbols]="['0']"
-                (eventEmitter)="keyPress($event)"></app-button>
-    <app-button class="grid-item dot" [symbols]="['.']" (eventEmitter)="keyPress($event)"></app-button>
-    <app-button class="grid-item equals" [symbols]="[equalsSymbol,enterSymbol]"
-                (eventEmitter)="keyPress($event)"></app-button>
+        <app-button class="grid-item grid-item-wide numerical" [symbols]="['0']"
+                    (eventEmitter)="keyPress($event)"></app-button>
+        <app-button class="grid-item dot" [symbols]="['.']" (eventEmitter)="keyPress($event)"></app-button>
+        <app-button class="grid-item equals" [symbols]="[equalsSymbol,enterSymbol]"
+                    (eventEmitter)="keyPress($event)"></app-button>
+      </div>
+    </div>
   </div>
-</div>
-

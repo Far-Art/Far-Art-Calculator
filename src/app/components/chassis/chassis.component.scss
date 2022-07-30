@@ -1,9 +1,20 @@
-.chassis-container {
+
+.perspective-container {
+  perspective: 40em;
+}
+
+.chassis {
+  transform: rotateX(40deg) rotateZ(-10deg);
   position: relative;
   font-size: 1rem;
-  background: darkgray;
-  gap: 2em;
-  max-width: 20em;
+  width: 100vw;
+  max-width: 30em;
+  color: white;
+  border-radius: 0.3em;
+}
+
+.chassis * {
+  transition: all 100ms linear;
 }
 
 .grid-container {
@@ -14,27 +25,35 @@
 }
 
 .grid-item {
-  background: rgba(190, 1, 1, 0.3);
-  border: 1px solid black;
+  background: rgba(31, 39, 86, 0.5);
+  border: 1px solid rgba(0 0 0 / 0.5);
+  border-radius: 0.3em;
   text-align: center;
-  height: 5em;
+  min-height: 4em;
+  font-size: 1.5em;
 }
 
 .grid-item:hover, .grid-item:focus-within {
-  background: rgba(190, 1, 1, 0.8);
-  border: 1px solid black;
+  background: linear-gradient(0, rgba(70,118,224,0.7) 0%, rgba(12,192,231,0.7) 100%);
   text-align: center;
+  transform: translate3d(0.12em, -0.5em, 0) scale(107%);
 }
 
 .grid-item-wide {
-  grid-column: span 2;
+  grid-column: 2 span;
+}
+
+.grid-item-tall {
+  grid-row: 1 / span 2;
 }
 
 .display {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  padding: 0.5em 1em;
-  font-size: 1em;
-  height: 4em;
+  padding: 0.5em 0.6em;
+  font-size: 1.2em;
+  height: 7em;
+  background: rgba(31, 39, 86, 0.5);
+  border-radius: 0.3em;
 }
